@@ -18,8 +18,8 @@ public struct Audio
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
-    public float maxX = 1.0f;
-    public float maxY = 1.0f;
+    private float maxX;
+    private float maxY;
     public Renderer bgRender;
     public GameObject bulletPrefab;
     public Transform fireTransform;
@@ -44,6 +44,9 @@ public class Player : MonoBehaviour
         time = 0;
         transform.position = new Vector3(0, -maxY, transform.position.z);
         InvokeRepeating("Attack", 0, attackInterval);
+        Vector2 plyerSize = gameObject.GetComponent<BoxCollider2D>().size;
+        maxX = bgRender.gameObject.transform.localScale.x / 2 - plyerSize.x / 2;
+        maxY = bgRender.gameObject.transform.localScale.y / 2 - plyerSize.y / 2;
     }
 
     // Update is called once per frame
