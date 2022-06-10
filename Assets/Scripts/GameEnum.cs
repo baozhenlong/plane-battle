@@ -5,4 +5,5 @@ public static class GameEnum
     public const string WallTag = "Wall";
     public const string PlayerBullet = "PlayerBullet";
     public const string EnemyBullet = "EnemyBullet";
+    public const string HighestScore = "HighestScore";
 }

@@ -35,20 +35,22 @@ public class Player : MonoBehaviour
     public Audio attackAudio;
     public Audio gameOverAudio;
     public Animator animatorComp;
+    private float time = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         game.Init(hp, score);
+        time = 0;
         transform.position = new Vector3(0, -maxY, transform.position.z);
         InvokeRepeating("Attack", 0, attackInterval);
-        // animatorComp
     }
 
     // Update is called once per frame
     void Update()
     {
-        bgRender.material.SetTextureOffset("_MainTex", new Vector2(0, Time.time / bgScrollSpeed));
+        time += Time.deltaTime;
+        bgRender.material.SetTextureOffset("_MainTex", new Vector2(0, time / bgScrollSpeed));
         if (Input.GetKeyDown(KeyCode.Space))
         {
             BigAttack();
@@ -89,6 +91,7 @@ public class Player : MonoBehaviour
     {
         if (hp > 0)
         {
+            animatorComp.SetTrigger("Hurt");
             hp -= damage;
             if (hp <= 0)
             {

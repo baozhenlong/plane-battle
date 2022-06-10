@@ -12,8 +12,11 @@ public class Game : MonoBehaviour
 
     public TextMeshProUGUI hpComp;
     public TextMeshProUGUI scoreComp;
+    public TextMeshProUGUI highestScoreComp;
 
     public GameObject gameOver;
+
+    private float currentScore = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +29,9 @@ public class Game : MonoBehaviour
     {
         ChangeHp(hp);
         ChangeScore(score);
+        currentScore = score;
+        float highestScore = PlayerPrefs.GetFloat(GameEnum.HighestScore);
+        highestScoreComp.SetText($"{highestScore}");
     }
 
     public void ChangeHp(int hp)
@@ -37,7 +43,9 @@ public class Game : MonoBehaviour
     {
         if (Time.timeScale != 0)
         {
-            scoreComp.SetText($"{Mathf.Ceil(score)}");
+            float scoreText = Mathf.Ceil(score);
+            scoreComp.SetText($"{scoreText}");
+            currentScore = scoreText;
         }
     }
 
@@ -59,6 +67,12 @@ public class Game : MonoBehaviour
 
     public void GameOver()
     {
+        float score = PlayerPrefs.GetFloat(GameEnum.HighestScore);
+        if (currentScore > score)
+        {
+            PlayerPrefs.SetFloat(GameEnum.HighestScore, currentScore);
+        }
+        PlayerPrefs.Save();
         Time.timeScale = 0;
         gameOver.SetActive(true);
     }
